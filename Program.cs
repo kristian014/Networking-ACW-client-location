@@ -10,7 +10,7 @@ public class Whois
         String Servername = "whois.net.dcs.hull.ac.uk";
         int PortNumber = 43;
         String Protocol = "Whois";
-
+        string reply;
 
         try
         {
@@ -65,13 +65,22 @@ public class Whois
 
             TcpClient client = new TcpClient();
             client.Connect(Servername, PortNumber);
-            
+            StreamWriter sw = new StreamWriter(client.GetStream());
+            StreamReader sr = new StreamReader(client.GetStream());
+           client.SendTimeout= 1000;
+            client.ReceiveTimeout = 1000;
 
-            if (clientInfo.Count == 1)
+
+            if (clientInfo.Count < 1)
+            {
+                Console.WriteLine("Please provide atleast one args");
+                return;
+            }
+
+           else if (clientInfo.Count == 1)
 
             {
-                StreamWriter sw = new StreamWriter(client.GetStream());
-                StreamReader sr = new StreamReader(client.GetStream());
+               
 
                 switch (Protocol)
                 {
@@ -91,39 +100,47 @@ public class Whois
                         sw.WriteLine("GET" + " " + "/?" + "name" + "=" + clientInfo[0] + " " + "HTTP/1.1");
                         sw.WriteLine("Host:" + " " + Servername + "\r\n");
                         sw.Flush();
+                        Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
                         break;
 
                     case "-h0":
                         sw.WriteLine("GET" + " " + "/?" + clientInfo[0] + " " + "HTTP/1.0" + "\r\n");
-                       Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
-                        sw.Flush();
+                      sw.Flush();
+                        Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
                         break;
 
                 }
                 
-               return;
+              return;
             }
 
 
             else if (clientInfo.Count == 2)
             {
-                StreamWriter sw = new StreamWriter(client.GetStream());
-                StreamReader sr = new StreamReader(client.GetStream());
-
+               
                 switch (Protocol)
                 {
                     case "Whois":
                         sw.WriteLine(clientInfo[0] + " " + clientInfo[1]);
                         sw.Flush();
-                        Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                        reply = sr.ReadLine();
+                        if (reply == "OK")
+                            Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                        else
+                            Console.WriteLine("Bad reply: " + reply);
                         sw.Close();
                         break;
 
                     case "-h9":
                         sw.WriteLine("PUT" + " " + "/" + clientInfo[0] + "\r\n");
                         sw.WriteLine(clientInfo[1]);
+                        //Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                         sw.Flush();
-                         //Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                        reply = sr.ReadLine();
+                        if (reply.StartsWith ("HTTP / 0.9" + " " + 200 + " " + "OK" + "\r\n" ))
+                            Console.WriteLine(clientInfo[1] + "\r\n");
+                        else
+                            Console.WriteLine("Bad reply: " + reply);
                         break;
 
                     case "-h1":
@@ -132,7 +149,11 @@ public class Whois
                         sw.WriteLine("Content-Length:" + " " + clientInfo.Count + "\r\n");
                         sw.WriteLine("name" + "=" + clientInfo[0] + "&" + "location" + "=" + clientInfo[1]);
                         sw.Flush();
-
+                        reply = sr.ReadLine();
+                        if (reply.StartsWith  ("HTTP / 1.1" + " " + 200 + " " + "OK" + "\r\n"))
+                            Console.WriteLine(clientInfo[1] + "\r\n");
+                        else
+                            Console.WriteLine("Bad reply: " + reply);
                         break;
 
                     case "-h0":
@@ -140,10 +161,15 @@ public class Whois
                         sw.WriteLine("Content-Length:" + " " + clientInfo.Count + "\r\n");
                         sw.WriteLine(clientInfo[1]);
                         sw.Flush();
+                        reply = sr.ReadLine();
+                        if (reply.StartsWith ("HTTP / 1.0" + " " + 200 + " " + "OK" + "\r\n"))
+                            Console.WriteLine(clientInfo[1] + "\r\n");
+                        else
+                            Console.WriteLine("Bad reply: " + reply);
                         break;
 
                 }
-                return;
+               return;
 
             }
 
@@ -152,6 +178,8 @@ public class Whois
                 Console.WriteLine("Too many args");
                 return;
             }
+
+            //return;
         }
         catch (Exception e)
         {
