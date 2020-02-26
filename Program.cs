@@ -11,8 +11,7 @@ public class Whois
         int PortNumber = 43;
         string Protocol = "Whois";
         string reply;
-        //string Name = null;
-        //string location = null;
+       
 
         try
         {
@@ -71,14 +70,7 @@ public class Whois
 
                     default:
                         {
-                           //if (Name == null)
-                           // {
-                               // Name = args[0];
-                           // }
-                            //else if (location == null)
-                            //{
-                                //location = args[1];
-                           // }
+                           
                             clientInfo.Add(args[i]);
                             break;
                         }
@@ -114,21 +106,79 @@ public class Whois
 
                     case "-h9":
                         sw.WriteLine("GET" + " " + "/" + clientInfo[0] );
-                         sw.Flush();
-                        Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
+                        sw.Flush();
+                        string ik = sr.ReadToEnd();
+                        string[] j = ik.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        Console.WriteLine(clientInfo[0] + " is " + j[2]);
+                        sw.Flush();
                         break;
 
                     case "-h1":
+                        string MessageUpdate;
+                        MessageUpdate = "HTTP//1.1 404 Not Found";
                         sw.WriteLine("GET" + " " + "/?" + "name" + "=" + clientInfo[0] + " " + "HTTP/1.1");
                         sw.WriteLine("Host:" + " " + Servername + "\r\n");
                         sw.Flush();
-                        Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
+                       // Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
+                       // string Line = "";
+                        string location = "";
+                        List<string> HoldEmptyLines = new List<string>();
+
+                        string line = sr.ReadLine().Trim();
+                        while ((line != ""))
+                        {
+                            // ignore optional header lines.
+                            line = sr.ReadLine().Trim();
+                        }
+                        string output = "";
+                        try
+                        {
+                            int c;
+                            while ((sr.Peek() > 0))
+                            {
+                                c = sr.Read();
+                                output = output + (char)c;
+                            }
+                            Console.WriteLine(clientInfo[0] + " is "+output);
+                           
+                        }
+                        catch(IOException)
+                        {
+                         //   Console.WriteLine(clientInfo[0] + " is " + output);
+                            // ignore optional header lines.
+                        }
+                        finally
+                        {
+                            sr.Close();
+                            sw.Close();
+                        }
+                        if (HoldEmptyLines.Contains(MessageUpdate))
+                        {
+                            Console.WriteLine("Error: " + MessageUpdate);
+                        }
+                        else
+                        {
+                            if (HoldEmptyLines.Contains(""))
+                            {
+                                int i = HoldEmptyLines.IndexOf("");
+                                for(int x= i+1; x<HoldEmptyLines.Count; x++)
+                                {
+
+                                    location += HoldEmptyLines[x] + "\r\n";
+                                }
+                            }
+                        }
                         break;
 
                     case "-h0":
                         sw.WriteLine("GET" + " " + "/?" + clientInfo[0] + " " + "HTTP/1.0" + "\r\n");
-                      sw.Flush();
-                        Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
+                        sw.Flush();
+
+                        string k = sr.ReadToEnd();
+                        string[] l = k.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        Console.WriteLine(clientInfo[0] + " is " + l[2]);
+                        sw.Flush();
+                       // Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
                         break;
 
                 }
@@ -158,8 +208,9 @@ public class Whois
                         //Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                         sw.Flush();
                         reply = sr.ReadLine();
-                        if (reply.StartsWith ("HTTP / 0.9" + " " + 200 + " " + "OK" + "\r\n" ))
-                            Console.WriteLine(clientInfo[1] + "\r\n");
+                        if (reply.StartsWith("HTTP / 0.9" + " " + 200 + " " + "OK" + "\r\n" ))
+                            //
+                            Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                         else
                             Console.WriteLine("Bad reply: " + reply);
                         break;
@@ -172,11 +223,11 @@ public class Whois
                         sw.WriteLine();
                         sw.WriteLine(i);
                         sw.Flush();
-                        Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                       Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
 
                         reply = sr.ReadLine();
-                        if (reply.StartsWith  ("HTTP / 1.1" + " " + 200 + " " + "OK" + "\r\n"))
-                            Console.WriteLine(clientInfo[1] + "\r\n");
+                        if (reply.StartsWith  ("HTTP/1.1 405 Method Not Allowed" ))
+                        Console.WriteLine(clientInfo[1] + "\r\n");
                         else
                             Console.WriteLine("Bad reply: " + reply);
                         break;
@@ -185,13 +236,13 @@ public class Whois
                         sw.WriteLine("POST /"+ clientInfo[0] + " " + "HTTP/1.0");
                         sw.WriteLine("Content-Length: " + clientInfo[1].Length);
                         sw.WriteLine();
-                       sw.WriteLine(clientInfo[1] );
+                       sw.WriteLine(clientInfo[1]);
                         sw.Flush();
                         Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
 
                         reply = sr.ReadLine();
                         if (reply.StartsWith ("HTTP / 1.0" + " " + 200 + " " + "OK" + "\r\n"))
-                            Console.WriteLine(clientInfo[1]);
+                        Console.WriteLine(clientInfo[1]);
                         else
                             Console.WriteLine("Bad reply: " + reply);
                         break;
@@ -207,7 +258,7 @@ public class Whois
                 return;
             }
 
-            //return;
+           
         }
         catch (Exception e)
         {
