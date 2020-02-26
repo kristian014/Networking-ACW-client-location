@@ -7,10 +7,12 @@ public class Whois
 {
     static void Main(string[] args)
     {
-        String Servername = "whois.net.dcs.hull.ac.uk";
+        string Servername = "whois.net.dcs.hull.ac.uk";
         int PortNumber = 43;
-        String Protocol = "Whois";
+        string Protocol = "Whois";
         string reply;
+        //string Name = null;
+        //string location = null;
 
         try
         {
@@ -24,52 +26,72 @@ public class Whois
                 {
 
                     case "-h":
-                        i++;
-                        Servername = args[i];
-                        break;
+                        {
+                            i++;
+                            Servername = args[i];
+                            break;
+                        }
+                       
 
                     case "-p":
-                        i++;
-                        PortNumber = Int32.Parse(args[i]);
-
-                        break;
+                        {
+                            i++;
+                            PortNumber = Int32.Parse(args[i]);
+                             break;
+                        }
+                       
 
                     case "Whois":
+                        {
+                            Protocol = args[i];
 
-                        Protocol = args[i];
+                            break;
+                        }
 
-                        break;
+                       
 
                     case "-h0":
-                        Protocol = args[i];
-                        break;
+                        {
+                            Protocol = args[i];
+                            break;
+                        }
+                       
 
                     case "-h1":
-
-                        Protocol = args[i];
-                        break;
-
+                        {
+                            Protocol = args[i];
+                            break;
+                        }
                     case "-h9":
+                        {
+                            Protocol = args[i];
 
-                        Protocol = args[i];
-
-                        break;
-
+                            break;
+                        }
 
                     default:
-                        clientInfo.Add(args[i]);
-                        //Console.WriteLine($"An unexpected value ({caseSwitch})");
-                        break;
+                        {
+                           //if (Name == null)
+                           // {
+                               // Name = args[0];
+                           // }
+                            //else if (location == null)
+                            //{
+                                //location = args[1];
+                           // }
+                            clientInfo.Add(args[i]);
+                            break;
+                        }
                 }
             }
-
+           
             TcpClient client = new TcpClient();
             client.Connect(Servername, PortNumber);
-            StreamWriter sw = new StreamWriter(client.GetStream());
-            StreamReader sr = new StreamReader(client.GetStream());
+           
            client.SendTimeout= 1000;
             client.ReceiveTimeout = 1000;
-
+            StreamWriter sw = new StreamWriter(client.GetStream());
+            StreamReader sr = new StreamReader(client.GetStream());
 
             if (clientInfo.Count < 1)
             {
@@ -117,7 +139,6 @@ public class Whois
 
             else if (clientInfo.Count == 2)
             {
-               
                 switch (Protocol)
                 {
                     case "Whois":
@@ -146,9 +167,13 @@ public class Whois
                     case "-h1":
                         sw.WriteLine("POST" + " " + "/" + " " + "HTTP/1.1");
                         sw.WriteLine("Host:" + " " + Servername);
-                        sw.WriteLine("Content-Length:" + " " + clientInfo.Count + "\r\n");
-                        sw.WriteLine("name" + "=" + clientInfo[0] + "&" + "location" + "=" + clientInfo[1]);
+                        string i = "name=" + clientInfo[0] +  "&location=" + clientInfo[1];
+                        sw.WriteLine("Content-Length:" + " " + i.Length);
+                        sw.WriteLine();
+                        sw.WriteLine(i);
                         sw.Flush();
+                        Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+
                         reply = sr.ReadLine();
                         if (reply.StartsWith  ("HTTP / 1.1" + " " + 200 + " " + "OK" + "\r\n"))
                             Console.WriteLine(clientInfo[1] + "\r\n");
@@ -157,13 +182,16 @@ public class Whois
                         break;
 
                     case "-h0":
-                        sw.WriteLine("POST" + " " + "/" + clientInfo[0] + " " + "HTTP/1.0");
-                        sw.WriteLine("Content-Length:" + " " + clientInfo.Count + "\r\n");
-                        sw.WriteLine(clientInfo[1]);
+                        sw.WriteLine("POST /"+ clientInfo[0] + " " + "HTTP/1.0");
+                        sw.WriteLine("Content-Length: " + clientInfo[1].Length);
+                        sw.WriteLine();
+                       sw.WriteLine(clientInfo[1] );
                         sw.Flush();
+                        Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+
                         reply = sr.ReadLine();
                         if (reply.StartsWith ("HTTP / 1.0" + " " + 200 + " " + "OK" + "\r\n"))
-                            Console.WriteLine(clientInfo[1] + "\r\n");
+                            Console.WriteLine(clientInfo[1]);
                         else
                             Console.WriteLine("Bad reply: " + reply);
                         break;
