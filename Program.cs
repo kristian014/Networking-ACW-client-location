@@ -116,13 +116,10 @@ public class Whois
 
                     case "-h1":
                        
-                        sw.WriteLine("GET /?" + "name" + "=" + clientInfo[0] + " " + "HTTP/1.1");
+                        sw.WriteLine("GET /?name=" + clientInfo[0] + " " + "HTTP/1.1");
                         sw.WriteLine("Host:" + " " + Servername + "\r\n");
                         sw.Flush();
-                       // Console.WriteLine(clientInfo[0] + " is " + sr.ReadToEnd());
-                       // string Line = "";
-                        //string location = "";
-                       // List<string> HoldEmptyLines = new List<string>();
+                       
 
                         string line = sr.ReadLine().Trim();
                         while ((line != "")== true)
@@ -144,8 +141,7 @@ public class Whois
                         }
                         catch
                         {
-                         //   Console.WriteLine(clientInfo[0] + " is " + output);
-                            // ignore optional header lines.
+                        
                         }
                         finally
                         {
@@ -192,7 +188,7 @@ public class Whois
                         break;
 
                     case "-h9":
-                        sw.WriteLine("PUT" + " " + "/" + clientInfo[0] + "\r\n");
+                        sw.WriteLine("PUT /" + clientInfo[0] + "\r\n");
                         sw.WriteLine(clientInfo[1]);
                         //Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                         sw.Flush();
@@ -205,7 +201,7 @@ public class Whois
                         break;
 
                     case "-h1":
-                        sw.WriteLine("POST" + " " + "/" + " " + "HTTP/1.1");
+                        sw.WriteLine("POST / HTTP/1.1");
                         sw.WriteLine("Host:" + " " + Servername);
                         string i = "name=" + clientInfo[0] +  "&location=" + clientInfo[1];
                         sw.WriteLine("Content-Length:" + " " + i.Length);
