@@ -15,6 +15,12 @@ namespace location
         public Locationform()
         {
             InitializeComponent();
+
+            if(lacationform2.UpdateButton == true)
+            {
+                tb_location.Visible = true;
+                label3.Visible = true;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -24,12 +30,24 @@ namespace location
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Whois.Servername = tb_servername.Text;
-            Whois.Protocol = lb_protocol.Text;
-            Whois.PortNumber = Int32.Parse(tb_portnumber.Text);
-            Whois.clientInfo.Add(tb_username.Text);
-            Whois.clientInfo.Add(tb_location.Text);
-            //Whois.timeout = Int32.Parse(timeout.)
+            if (lacationform2.UpdateButton == true)
+            {
+                Whois.Servername = tb_servername.Text;
+                Whois.Protocol = cb_protocol.Text;
+                Whois.PortNumber = int.Parse(tb_portnumber.Text);
+                Whois.clientInfo.Add(tb_username.Text);
+                Whois.clientInfo.Add(tb_location.Text);
+            }
+            else {
+                Whois.Servername = tb_servername.Text;
+                Whois.Protocol = cb_protocol.Text;
+                Whois.PortNumber = int.Parse(tb_portnumber.Text);
+                Whois.clientInfo.Add(tb_username.Text);
+                //Whois.clientInfo.Add(tb_location.Text);
+                //Whois.timeout = Int32.Parse(timeout.);
+            }
+
+            Application.Exit();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -38,6 +56,11 @@ namespace location
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lb_protocol_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

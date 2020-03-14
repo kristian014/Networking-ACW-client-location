@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lacationform2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="lacationform2.Designer.cs">
+      <DependentUpon>lacationform2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Locationform.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <None Include="Resources\tcp2.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="lacationform2.resx">
+      <DependentUpon>lacationform2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locationform.resx">
       <DependentUpon>Locationform.cs</DependentUpon>
     </EmbeddedResource>
