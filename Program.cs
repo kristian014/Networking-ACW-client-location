@@ -38,7 +38,7 @@ namespace location
         public static int PortNumber = 0;
         public static String Protocol = null;
         public static String reply = "OK";
-        public static int timeout = 0;
+        public static int timeout = 1000;
         public static List<string> clientInfo = new List<string>();
      //  bool debugging = true;
 
@@ -63,7 +63,7 @@ namespace location
                     PortNumber = 0;
                     Protocol = null;
                     reply = null;
-                    timeout = 0;
+                    timeout = 1000;
                     List<string> clientInfo = new List<string>();
                     info.run_windows();
 
@@ -82,7 +82,7 @@ namespace location
                     PortNumber = 43;
                     Protocol = "Whois";
                     reply = "OK";
-                    int timeout = 1000;
+                    
 
                     for (int i = 0; i < args.Length; i++)
                     {
@@ -173,13 +173,6 @@ namespace location
                 // this checks if the list has any values in it. 
                 // if there is not value, then write to the console argurment should be more than one. 
 
-                //if (clientInfo.Count < 1)
-                //{
-
-                //    Console.WriteLine("Please provide atleast one args");
-                //    return;
-                //}
-
                 // If in the second index in the list which is suppose to be the location is empty,
                 // swtich protocol 
 
@@ -261,14 +254,14 @@ namespace location
                                 sw.WriteLine("Host:" + " " + Servername + "\r\n");
                                 sw.Flush();
                                 string Readhtml_line = sr.ReadLine();
-                                // List<string> htmlweblist = new List<string>();
+
 
                                 while ((Readhtml_line != "") == true)
                                 {
-                                    // ignore optional header lines.
+
                                     Readhtml_line = sr.ReadLine().Trim();
                                 }
-                                // print to the screen the username "is"
+
                                 Console.Write(clientInfo[0] + " is " + Readhtml_line);
 
 
@@ -288,6 +281,7 @@ namespace location
                                 }
                             }
                             break;
+
 
 
 
