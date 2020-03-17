@@ -24,20 +24,21 @@ namespace location
 
 
 
-       static String Servername = "whois.net.dcs.hull.ac.uk";
+        static String Servername = "whois.net.dcs.hull.ac.uk";
         static int PortNumber = 43;
         static String Protocol = "whois";
         static String reply = "OK";
         static int timeout = 1000;
-        static string response;
+        public static string response;
         public static List<string> clientInfo = new List<string>();
-        static bool debugging = false;
+        public static bool debugging = false;
 
         public static void Main(string[] args)
         {
-          
 
-            try {
+
+            try
+            {
 
                 // The purpose of creating this list of strings is to store the arguments from the user
 
@@ -60,10 +61,6 @@ namespace location
                     Protocol = info.m_protocol;
                     response = info.m_response;
 
-                    // clientInfo = info.m_username;
-                    //Whois.clientInfo.Add(info.m_username);
-                    //Whois.clientInfo.Add(info.m_location);
-                    // timeout = 1000;
 
                 }
 
@@ -76,20 +73,6 @@ namespace location
                     Servername = "whois.net.dcs.hull.ac.uk";
                     Protocol = "Whois";
                     PortNumber = 43;
-                    timeout = 1000;
-
-
-
-
-
-                    //else
-                    //{
-                    //    // continue 
-                    //}
-
-
-
-
 
 
 
@@ -98,6 +81,7 @@ namespace location
                         if (debugging) Console.WriteLine(args[i]);
                         switch (args[i])
                         {
+
                             case "-t":
 
                                 i++;
@@ -166,19 +150,25 @@ namespace location
                 }
 
 
-                
 
-                if (debugging == true) Console.WriteLine($"Servername: {Servername}",  $"Portnumber: {PortNumber}");
+                // This debugging enables the user to know where in the program that is executing without him looking at the code.
+                if (debugging) Console.WriteLine($"Servername: {Servername}");
                 // After going through all the arguments, then you can connect
                 // By creating a tcp client and and calling the .connect method
-               
-            
+
+
                 TcpClient client = new TcpClient();
                 client.Connect(Servername, PortNumber);
 
+                // Timeout is set by default to 1000. 
+                //This sends and receives timeout from the server 
                 client.SendTimeout = timeout;
                 client.ReceiveTimeout = timeout;
 
+                // this checks if the timeout was successfully received and sent and print to the user.
+                //if (debugging == true) Console.WriteLine($"Servername: {timeout}");
+                // Using the stream writer to write to the server and a stream reader to read the reply from the server
+                if (debugging) Console.WriteLine(timeout);
                 // Using the stream writer to write to the server and a stream reader to read the reply from the server
                 StreamWriter sw = new StreamWriter(client.GetStream());
                 StreamReader sr = new StreamReader(client.GetStream());
@@ -189,6 +179,25 @@ namespace location
                 // If in the second index in the list which is suppose to be the location is empty,
                 // swtich protocol 
 
+
+                /*
+               *  this checks if the list has any values in it.
+               if there is not value, then write to the console argurment should be more than one.
+
+               If in the second index in the list which is suppose to be the location is empty,
+               swtich protocol
+
+              Some of the lines depending on the protocol that was selected is split and the username 
+              is gotten from the line and check if it's in the dictionary.
+
+
+              This website provided information in spliting lines into new lines and removes empty spaces 
+              https://stackoverflow.com/questions/1547476/easiest-way-to-split-a-string-on-newlines-in-net
+
+              Also from line 263 checks if the portnumber is  80 and testing against a web server. 
+
+               * 
+               */
                 if (clientInfo.Count == 1)
 
                 {
@@ -205,13 +214,14 @@ namespace location
                             {
                                 Console.WriteLine(clientInfo[0] + " is " + reply_fromserver);
                                 response = clientInfo[0] + " is " + reply_fromserver;
-                                debugging = true;
+                                if (debugging) Console.WriteLine(clientInfo[0] + " is " + reply_fromserver);
                             }
 
                             else
                             {
                                 Console.WriteLine("ERROR: no entries found");
                                 response = "ERROR: no entries found";
+                                if (debugging) Console.WriteLine(response);
                             }
                             break;
 
@@ -227,12 +237,13 @@ namespace location
 
                                 Console.WriteLine(clientInfo[0] + " is " + j[2]);
                                 response = clientInfo[0] + " is " + j[2];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                 response = "HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             // Console.WriteLine(clientInfo[0] + " is " + j[2]);
@@ -254,7 +265,7 @@ namespace location
 
                                     Console.WriteLine(clientInfo[0] + " is " + Get_IndividualLines[2]);
                                     response = clientInfo[0] + " is " + Get_IndividualLines[2];
-                                    debugging = true;
+                                    if (debugging) Console.WriteLine(response);
                                     return;
                                 }
                                 else
@@ -262,6 +273,7 @@ namespace location
 
                                     Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                     response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
+                                    if (debugging) Console.WriteLine(response);
                                 }
                             }
 
@@ -283,7 +295,8 @@ namespace location
 
                                 Console.Write(clientInfo[0] + " is " + Readhtml_line);
                                 response = clientInfo[0] + " is " + Readhtml_line;
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
+
                                 try
                                 {
                                     int c;
@@ -318,12 +331,13 @@ namespace location
 
                                 Console.WriteLine(clientInfo[0] + " is " + l[2]);
                                 response = clientInfo[0] + " is " + l[2];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                 response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             break;
@@ -333,6 +347,16 @@ namespace location
                     return;
                 }
 
+
+                /*
+                          This part check if the user wants to update a clients location 
+                          Depending on the protocol selected, the lines are split to match the ASW specification 
+                          and the username and location is split and pulled from the lines and reply is sent back to the user 
+                          from the server. 
+
+                             The debugging features is also here to help see if a part is successful
+
+               */
 
                 else if (clientInfo.Count == 2)
                 {
@@ -346,14 +370,14 @@ namespace location
                             {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             else
                             {
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             sw.Close();
@@ -370,7 +394,7 @@ namespace location
                             {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
                             //
 
@@ -378,6 +402,7 @@ namespace location
                             {
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             break;
@@ -397,13 +422,14 @@ namespace location
                             {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1] + "\r\n");
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             else
                             {
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             break;
@@ -421,13 +447,14 @@ namespace location
                             {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
-                                debugging = true;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             else
                             {
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
+                                if (debugging) Console.WriteLine(response);
                             }
 
                             break;
@@ -437,11 +464,11 @@ namespace location
 
                 }
 
-
                 else
                 {
                     Console.WriteLine("Too many args");
                     response = "Too many args";
+                    if (debugging) Console.WriteLine(response);
                     return;
                 }
 
@@ -450,16 +477,13 @@ namespace location
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                if (debugging) Console.WriteLine(e.Message);
 
             }
 
-            if (debugging == true)
-            {
-                Console.WriteLine($"Servername: {Servername}", $"Portnumber: {PortNumber}" ,
-                    $"clieninfo[0]: {clientInfo[0]}", $"clientinfo[1]: {clientInfo[1]} ");
-            }
+
         }
 
     }
-    }
+}
 

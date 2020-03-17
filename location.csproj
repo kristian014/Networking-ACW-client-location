@@ -90,5 +90,14 @@
   <ItemGroup>
     <None Include="Resources\Capture3.PNG" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\networking2.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\networking.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\networking1.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
