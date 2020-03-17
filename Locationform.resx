@@ -309,7 +309,7 @@
     <value>Microsoft Sans Serif, 12pt, style=Bold</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>627, 311</value>
+    <value>639, 313</value>
   </data>
   <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 36</value>
@@ -336,10 +336,10 @@
     <value>Microsoft Sans Serif, 11.25pt, style=Bold</value>
   </data>
   <data name="buttom_exit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 310</value>
+    <value>479, 312</value>
   </data>
   <data name="buttom_exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 37</value>
+    <value>91, 37</value>
   </data>
   <data name="buttom_exit.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>

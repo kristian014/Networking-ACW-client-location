@@ -31,13 +31,13 @@ namespace location
         static int timeout = 1000;
         public static string response;
         public static string debuggingresponse;
-        public static List<string> clientInfo = new List<string>();
+         static List<string> clientInfo = new List<string>();
         public static bool debugging = false;
 
         public static void Main(string[] args)
         {
 
-
+            clientInfo.Clear();
             try
             {
 
@@ -61,7 +61,8 @@ namespace location
                     PortNumber = int.Parse(info.m_portnumber);
                     Protocol = info.m_protocol;
                     response = info.m_response;
-
+                    //clientInfo.Add(info.m_username);
+                    //clientInfo.Add(info.m_location);
 
                 }
 
@@ -141,7 +142,7 @@ namespace location
 
                             default:
 
-
+                                
                                 clientInfo.Add(args[i]);
                                 break;
 

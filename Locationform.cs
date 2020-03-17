@@ -14,7 +14,7 @@ namespace location
     public partial class Locationform : Form
     {
         public string m_username;
-        public string m_location;
+        public string m_location ;
         public string m_protocol;
         public string m_portnumber;
         public string m_servername;
@@ -55,43 +55,17 @@ namespace location
             {
                 // the if statement below checks if the debugging features is ticked
                 // if that is tick i want to send the arguement to the main program and making debug true
-                if (checkBox1.Checked)
-                {
-                    // add the usernamerto the client info
-                    Whois.clientInfo.Add(tb_username.Text);
-
-                    // add the location to the client info
-                    Whois.clientInfo.Add(tb_location.Text);
-
-                    // this sends the the information from the windows form to the main argument. 
-                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_debug, m_protocol };
-                    Whois.Main(argsfromwindowsform);
-                   
-
-                    textBox1.Text = Whois.response + "\r\n" + Whois.debuggingresponse;
-                }
+                
 
                 // if the debug isn't ticked, the debug becomes the default which is false 
-                else
-                {
-
-                    // add the usernamerto the client info
-                    Whois.clientInfo.Add(tb_username.Text);
-
-                    // add the location to the client info
-                    Whois.clientInfo.Add(tb_location.Text);
-
-                    // this sends the the information from the windows form to the main argument. 
-                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_protocol };
+              
+                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_protocol , m_username ,m_location };
                     Whois.Main(argsfromwindowsform);
                     textBox1.Text = Whois.response;
-
+                if (checkBox1.Checked)
+                {
+                    textBox1.Text = textBox1.Text + "\r\n" + "Debug Feature enabled" + "\r\n" + Whois.debuggingresponse;
                 }
-            
-
-
-
-
 
             }
 
@@ -99,21 +73,16 @@ namespace location
             // Also when the debug features is ticked, the debug becomes true and false by default when the server is not tick
             else
             {
-
-                if (checkBox1.Checked)
-                {
-                    Whois.clientInfo.Add(tb_username.Text);
-                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_debug, m_protocol };
-                    Whois.Main(argsfromwindowsform);
-                    textBox1.Text = Whois.response + "\r\n" + Whois.debuggingresponse;
-                }
-
-                else
-                {
-                    Whois.clientInfo.Add(tb_username.Text);
-                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_protocol };
+                
+                    //Whois.clientInfo.Add(tb_username.Text);
+                    string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_protocol , m_username };
                     Whois.Main(argsfromwindowsform);
                     textBox1.Text = Whois.response;
+                
+                // if the check box is clicked, enable the debug response.
+            if (checkBox1.Checked)
+                {
+                    textBox1.Text =  textBox1.Text + "\r\n" + "Debug Feature enabled" + "\r\n" + Whois.debuggingresponse;
                 }
 
 
@@ -132,7 +101,7 @@ namespace location
                 m_username = tb_username.Text;
             }
            
-            // Whois.clientInfo.Add(tb_username.Text);
+           
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -235,6 +204,18 @@ namespace location
                 // do nothing and take the default which is false
             }
 
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (lacationform2.UpdateButton == true)
+            {
+
+
+            }
+                Hide();
+            Form form = new lacationform2();
+            form.Show();
         }
     }
 }
