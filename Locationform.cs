@@ -94,7 +94,7 @@ namespace location
         {
             if (tb_username.Text == "")
             {
-                // do nothing
+                // do nothing and cont
             }
             else
             {
