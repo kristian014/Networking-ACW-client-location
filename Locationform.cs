@@ -66,9 +66,9 @@ namespace location
                     // this sends the the information from the windows form to the main argument. 
                     string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_debug, m_protocol };
                     Whois.Main(argsfromwindowsform);
-                    textBox1.Text = Whois.response;
+                   
 
-                    textBox1.Text = Whois.response + "\r\n" + Whois.debugging;
+                    textBox1.Text = Whois.response + "\r\n" + Whois.debuggingresponse;
                 }
 
                 // if the debug isn't ticked, the debug becomes the default which is false 
@@ -105,7 +105,7 @@ namespace location
                     Whois.clientInfo.Add(tb_username.Text);
                     string[] argsfromwindowsform = { "-h", m_servername, "-p", m_portnumber, "-t", m_timeout, m_debug, m_protocol };
                     Whois.Main(argsfromwindowsform);
-                    textBox1.Text = Whois.response;
+                    textBox1.Text = Whois.response + "\r\n" + Whois.debuggingresponse;
                 }
 
                 else
@@ -123,13 +123,29 @@ namespace location
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            m_username = tb_username.Text;
+            if (tb_username.Text == "")
+            {
+                // do nothing
+            }
+            else
+            {
+                m_username = tb_username.Text;
+            }
+           
             // Whois.clientInfo.Add(tb_username.Text);
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            m_location = tb_location.Text;
+            if (tb_location.Text == "")
+            {
+                m_location = null;
+            }
+            else
+            {
+                m_location = tb_location.Text;
+            }
+            
             // Whois.clientInfo.Add(tb_location.Text);
         }
 
@@ -193,7 +209,7 @@ namespace location
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
-            textBox1.Text = Whois.response;
+            //textBox1.Text = Whois.response;
         }
 
         private void Response_Click(object sender, EventArgs e)

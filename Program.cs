@@ -30,6 +30,7 @@ namespace location
         static String reply = "OK";
         static int timeout = 1000;
         public static string response;
+        public static string debuggingresponse;
         public static List<string> clientInfo = new List<string>();
         public static bool debugging = false;
 
@@ -215,6 +216,7 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " is " + reply_fromserver);
                                 response = clientInfo[0] + " is " + reply_fromserver;
                                 if (debugging) Console.WriteLine(clientInfo[0] + " is " + reply_fromserver);
+                                debuggingresponse = clientInfo[0] + " is " + reply_fromserver;
                             }
 
                             else
@@ -222,6 +224,7 @@ namespace location
                                 Console.WriteLine("ERROR: no entries found");
                                 response = "ERROR: no entries found";
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "ERROR: no entries found";
                             }
                             break;
 
@@ -238,12 +241,14 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " is " + j[2]);
                                 response = clientInfo[0] + " is " + j[2];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " is " + j[2];
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                 response = "HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                             }
 
                             // Console.WriteLine(clientInfo[0] + " is " + j[2]);
@@ -266,6 +271,7 @@ namespace location
                                     Console.WriteLine(clientInfo[0] + " is " + Get_IndividualLines[2]);
                                     response = clientInfo[0] + " is " + Get_IndividualLines[2];
                                     if (debugging) Console.WriteLine(response);
+                                    debuggingresponse = clientInfo[0] + " is " + Get_IndividualLines[2];
                                     return;
                                 }
                                 else
@@ -274,6 +280,7 @@ namespace location
                                     Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                     response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                                     if (debugging) Console.WriteLine(response);
+                                    debuggingresponse = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                                 }
                             }
 
@@ -296,6 +303,7 @@ namespace location
                                 Console.Write(clientInfo[0] + " is " + Readhtml_line);
                                 response = clientInfo[0] + " is " + Readhtml_line;
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " is " + Readhtml_line;
 
                                 try
                                 {
@@ -332,12 +340,14 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " is " + l[2]);
                                 response = clientInfo[0] + " is " + l[2];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " is " + l[2];
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
                                 response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                             }
 
                             break;
@@ -371,6 +381,7 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " location changed to be " + clientInfo[1];
                             }
 
                             else
@@ -378,6 +389,7 @@ namespace location
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "Bad reply: " + reply;
                             }
 
                             sw.Close();
@@ -395,6 +407,7 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " location changed to be " + clientInfo[1];
                             }
                             //
 
@@ -403,6 +416,7 @@ namespace location
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "Bad reply: " + reply;
                             }
 
                             break;
@@ -423,6 +437,7 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1] + "\r\n");
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " location changed to be " + clientInfo[1];
                             }
 
                             else
@@ -430,6 +445,7 @@ namespace location
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "Bad reply: " + reply;
                             }
 
                             break;
@@ -448,6 +464,7 @@ namespace location
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
                                 response = clientInfo[0] + " location changed to be " + clientInfo[1];
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = clientInfo[0] + " location changed to be " + clientInfo[1];
                             }
 
                             else
@@ -455,6 +472,7 @@ namespace location
                                 Console.WriteLine("Bad reply: " + reply);
                                 response = "Bad reply: " + reply;
                                 if (debugging) Console.WriteLine(response);
+                                debuggingresponse = "Bad reply: " + reply;
                             }
 
                             break;
@@ -469,6 +487,7 @@ namespace location
                     Console.WriteLine("Too many args");
                     response = "Too many args";
                     if (debugging) Console.WriteLine(response);
+                    debuggingresponse = "Too many args";
                     return;
                 }
 
@@ -478,6 +497,7 @@ namespace location
             {
                 Console.WriteLine(e.Message);
                 if (debugging) Console.WriteLine(e.Message);
+                debuggingresponse = e.Message;
 
             }
 
