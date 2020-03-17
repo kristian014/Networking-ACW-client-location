@@ -16,16 +16,6 @@ using System.Drawing.Drawing2D;
 
 namespace location
 {
-    public class GetInformation_ForWindowsform : Whois
-    {
-        public void run_windows()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new lacationform2());
-        }
-    }
-
 
 
 
@@ -34,58 +24,78 @@ namespace location
 
 
 
-        public static String Servername = null;
-        public static int PortNumber = 0;
-        public static String Protocol = null;
-        public static String reply = "OK";
-        public static int timeout = 1000;
+       static String Servername = "whois.net.dcs.hull.ac.uk";
+        static int PortNumber = 43;
+        static String Protocol = "whois";
+        static String reply = "OK";
+        static int timeout = 1000;
+        static string response;
         public static List<string> clientInfo = new List<string>();
-     //  bool debugging = true;
+        static bool debugging = false;
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+          
 
+            try {
 
-
-
-
-            try
-            {
                 // The purpose of creating this list of strings is to store the arguments from the user
+
 
 
                 // This is to check if the argument is less than one. 
                 // If no argument is passed, the webform application is opened
                 if (args.Length <= 0)
                 {
-                    GetInformation_ForWindowsform info = new GetInformation_ForWindowsform();
-                    Servername = null;
-                    PortNumber = 0;
-                    Protocol = null;
-                    reply = null;
-                    timeout = 1000;
+
                     List<string> clientInfo = new List<string>();
-                    info.run_windows();
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Locationform info = new Locationform();
+                    Application.Run(new lacationform2());
 
+                    Servername = info.m_servername;
+                    timeout = int.Parse(info.m_timeout);
+                    PortNumber = int.Parse(info.m_portnumber);
+                    Protocol = info.m_protocol;
+                    response = info.m_response;
 
-                    //I need to create a boolean method that returns true or false. 
-                    // if its true, it goes to the forloop
-                    // if it's false, it returns.
+                    // clientInfo = info.m_username;
+                    //Whois.clientInfo.Add(info.m_username);
+                    //Whois.clientInfo.Add(info.m_location);
+                    // timeout = 1000;
+
                 }
+
+
+
 
 
                 else
                 {
-
-
                     Servername = "whois.net.dcs.hull.ac.uk";
-                    PortNumber = 43;
                     Protocol = "Whois";
-                    reply = "OK";
-                    
+                    PortNumber = 43;
+                    timeout = 1000;
+
+
+
+
+
+                    //else
+                    //{
+                    //    // continue 
+                    //}
+
+
+
+
+
+
 
                     for (int i = 0; i < args.Length; i++)
                     {
+                        if (debugging) Console.WriteLine(args[i]);
                         switch (args[i])
                         {
                             case "-t":
@@ -139,7 +149,9 @@ namespace location
                                 Protocol = args[i];
 
                                 break;
-
+                            case "-d":
+                                debugging = true;
+                                break;
 
 
                             default:
@@ -151,15 +163,16 @@ namespace location
                         }
                     }
 
-
-
-
                 }
 
 
+                
 
+                if (debugging == true) Console.WriteLine($"Servername: {Servername}",  $"Portnumber: {PortNumber}");
                 // After going through all the arguments, then you can connect
                 // By creating a tcp client and and calling the .connect method
+               
+            
                 TcpClient client = new TcpClient();
                 client.Connect(Servername, PortNumber);
 
@@ -176,7 +189,7 @@ namespace location
                 // If in the second index in the list which is suppose to be the location is empty,
                 // swtich protocol 
 
-              if (clientInfo.Count == 1)
+                if (clientInfo.Count == 1)
 
                 {
 
@@ -191,11 +204,14 @@ namespace location
                             if (!reply_fromserver.Equals("ERROR: no entries found"))
                             {
                                 Console.WriteLine(clientInfo[0] + " is " + reply_fromserver);
+                                response = clientInfo[0] + " is " + reply_fromserver;
+                                debugging = true;
                             }
 
                             else
                             {
                                 Console.WriteLine("ERROR: no entries found");
+                                response = "ERROR: no entries found";
                             }
                             break;
 
@@ -210,12 +226,13 @@ namespace location
                             {
 
                                 Console.WriteLine(clientInfo[0] + " is " + j[2]);
-
+                                response = clientInfo[0] + " is " + j[2];
+                                debugging = true;
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
-
+                                response = "HTTP / 0.9 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                             }
 
                             // Console.WriteLine(clientInfo[0] + " is " + j[2]);
@@ -236,13 +253,15 @@ namespace location
                                 {
 
                                     Console.WriteLine(clientInfo[0] + " is " + Get_IndividualLines[2]);
+                                    response = clientInfo[0] + " is " + Get_IndividualLines[2];
+                                    debugging = true;
                                     return;
                                 }
                                 else
                                 {
 
                                     Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
-
+                                    response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                                 }
                             }
 
@@ -263,8 +282,8 @@ namespace location
                                 }
 
                                 Console.Write(clientInfo[0] + " is " + Readhtml_line);
-
-
+                                response = clientInfo[0] + " is " + Readhtml_line;
+                                debugging = true;
                                 try
                                 {
                                     int c;
@@ -298,11 +317,13 @@ namespace location
                             {
 
                                 Console.WriteLine(clientInfo[0] + " is " + l[2]);
+                                response = clientInfo[0] + " is " + l[2];
+                                debugging = true;
                             }
                             else
                             {
                                 Console.WriteLine("HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n");
-
+                                response = "HTTP / 1.0 404 Not Found\r\n" + "Content - Type: text / plain\r\n\r\n";
                             }
 
                             break;
@@ -322,23 +343,43 @@ namespace location
                             sw.Flush();
                             reply = sr.ReadLine();
                             if (reply == "OK")
+                            {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                                response = clientInfo[0] + " location changed to be " + clientInfo[1];
+                                debugging = true;
+                            }
+
                             else
+                            {
                                 Console.WriteLine("Bad reply: " + reply);
+                                response = "Bad reply: " + reply;
+                                debugging = true;
+                            }
+
                             sw.Close();
                             break;
 
                         case "-h9":
                             sw.WriteLine("PUT /" + clientInfo[0] + "\r\n");
                             sw.WriteLine(clientInfo[1]);
-                            //Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+
                             sw.Flush();
                             reply = sr.ReadLine();
+
                             if (reply.Equals("HTTP/0.9 200 OK"))
-                                //
+                            {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                                response = clientInfo[0] + " location changed to be " + clientInfo[1];
+                                debugging = true;
+                            }
+                            //
+
                             else
+                            {
                                 Console.WriteLine("Bad reply: " + reply);
+                                response = "Bad reply: " + reply;
+                            }
+
                             break;
 
                         case "-h1":
@@ -353,9 +394,18 @@ namespace location
 
                             reply = sr.ReadLine();
                             if (reply.Equals("HTTP/1.1 200 OK"))
+                            {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1] + "\r\n");
+                                response = clientInfo[0] + " location changed to be " + clientInfo[1];
+                                debugging = true;
+                            }
+
                             else
+                            {
                                 Console.WriteLine("Bad reply: " + reply);
+                                response = "Bad reply: " + reply;
+                            }
+
                             break;
 
                         case "-h0":
@@ -368,9 +418,18 @@ namespace location
 
                             reply = sr.ReadLine();
                             if (reply.Equals("HTTP/1.0 200 OK"))
+                            {
                                 Console.WriteLine(clientInfo[0] + " location changed to be " + clientInfo[1]);
+                                response = clientInfo[0] + " location changed to be " + clientInfo[1];
+                                debugging = true;
+                            }
+
                             else
+                            {
                                 Console.WriteLine("Bad reply: " + reply);
+                                response = "Bad reply: " + reply;
+                            }
+
                             break;
 
                     }
@@ -378,9 +437,11 @@ namespace location
 
                 }
 
+
                 else
                 {
                     Console.WriteLine("Too many args");
+                    response = "Too many args";
                     return;
                 }
 
@@ -392,9 +453,13 @@ namespace location
 
             }
 
-
+            if (debugging == true)
+            {
+                Console.WriteLine($"Servername: {Servername}", $"Portnumber: {PortNumber}" ,
+                    $"clieninfo[0]: {clientInfo[0]}", $"clientinfo[1]: {clientInfo[1]} ");
+            }
         }
 
-
     }
-}
+    }
+
